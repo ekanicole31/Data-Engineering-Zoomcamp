@@ -1,0 +1,26 @@
+import csv
+from datetime import datetime
+
+# Define the name of the file
+filename = "green_tripdata_2019-01.csv"
+
+# Define the date to count trips for
+target_date = "2019-01-15"
+
+# Open the file in read mode
+with open(filename, "r") as file:
+    # Create a CSV reader object
+    reader = csv.reader(file)
+    
+    # Skip the header row
+    next(reader)
+    
+    # Count the number of trips for the target date
+    trip_count = 0
+    for row in reader:
+        trip_date = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S").date()
+        if trip_date == target_date:
+            trip_count += 1
+
+# Print the number of trips for the target date
+print("Number of trips for {}: {}".format(target_date, trip_count))
