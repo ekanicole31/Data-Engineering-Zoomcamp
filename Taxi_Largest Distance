@@ -1,0 +1,39 @@
+import csv
+from datetime import datetime
+
+# Define the name of the file
+filename = "green_tripdata_2019-01.csv"
+
+# Open the file in read mode
+with open(filename, "r") as file:
+    # Create a CSV reader object
+    reader = csv.reader(file)
+    
+    # Skip the header row
+    next(reader)
+    
+    # Create a dictionary to store the total distance for each date
+    distances = {}
+    
+    # Iterate through the records in the file
+    for row in reader:
+        # Extract the date and distance for the current row
+        trip_date = datetime.strptime(row[1], "%Y-%m-%d %H:%M:%S").date()
+        trip_distance = float(row[8])
+        
+        # Update the total distance for the current date
+        if trip_date in distances:
+            distances[trip_date] += trip_distance
+        else:
+            distances[trip_date] = trip_distance
+
+# Find the day with the largest total distance
+max_distance = 0
+max_date = None
+for date, distance in distances.items():
+    if distance > max_distance:
+        max_distance = distance
+        max_date = date
+
+# Print the day with the largest total distance
+print("The day with the largest total distance is {} with a total distance of {}".format(max_date, max_distance))
